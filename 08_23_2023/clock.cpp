@@ -14,13 +14,28 @@ void clockType::setHour(int h)
     }
 }
 
-clockType::clockType(int h, int m, int s)
+clockType::clockType(int h, int m, int s, std::string t, amPmType tod)
 {
     setHour(h);
     setMinute(m);
     setSecond(s);
     type = TWENTYFOUR;
     timeOfDay = PM;
+    std::transform(t.begin(), t.end(), t.begin(), ::tolower);
+    bool set = false;
+    for (int i = 0; i < 2; i++)
+    {
+        if (t == hourToString[i])
+        {
+            type = availableTypes[i];
+            set = true;
+        }
+    }
+    if (set == false)
+    {
+        type = TWENTYFOUR;
+    }
+    timeOfDay = tod;
 }
 
 void clockType::setMinute(int m)

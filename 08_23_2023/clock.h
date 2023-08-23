@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 
 enum hourType
 {
@@ -18,12 +19,14 @@ enum amPmType
 
 const std::string hourToString[] = {"12 hour clock", "24 hour clock"};
 const std::string amPmToString[] = {"AM", "PM"};
+const hourType availableTypes[] = {TWELVE, TWENTYFOUR};
+const amPmType timesOfDay[] = {AM, PM};
 
 class clockType
 {
 public:
     // clockType();
-    clockType(int h = 0, int m = 0, int s = 0); // first parameter is hour, second is minute, third is second.
+    clockType(int h = 0, int m = 0, int s = 0, std::string = hourToString[1], amPmType = timesOfDay[1]); // first parameter is hour, second is minute, third is second.
     void setHour(int h);
     void setMinute(int m);
     void setSecond(int s);
