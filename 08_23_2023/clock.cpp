@@ -19,6 +19,8 @@ clockType::clockType(int h, int m, int s)
     setHour(h);
     setMinute(m);
     setSecond(s);
+    type = TWENTYFOUR;
+    timeOfDay = PM;
 }
 
 void clockType::setMinute(int m)
@@ -47,6 +49,30 @@ void clockType::setSecond(int s)
         std::cout << "The second will be set to 0." << std::endl;
         second = 0;
     }
+}
+
+int clockType::getHour() const
+{
+    return hour;
+}
+
+std::string clockType::print() const
+{
+    std::ostringstream out;
+    out << std::setfill('0');
+    out << std::setw(2) << hour << ":";
+    out << std::setw(2) << minute << ":";
+    out << std::setw(2) << second;
+    if (type == TWELVE)
+    {
+        out << " " << amPmToString[timeOfDay];
+    }
+    else
+    {
+        out << std::endl;
+        out << hourToString[type] << std::endl;
+    }
+    return out.str();
 }
 
 /*
