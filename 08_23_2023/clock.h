@@ -6,6 +6,10 @@ class clockType
 {
 public:
     void setHour(int h);
+    clockType(int h = 0, int m = 0, int s = 0); // first parameter is hour, second is minute, third is second.
+    void setMinute(int m);
+    void setSecond(int s);
+    // clockType();
 
 private:
     int hour;

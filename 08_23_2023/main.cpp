@@ -4,8 +4,10 @@
 
 int main()
 {
-    clockType myClock;
+    clockType myClock(14, 32, 23);
     myClock.setHour(13);
+    clockType yourClock;
+    yourClock = myClock;
 
     return 0;
 }
