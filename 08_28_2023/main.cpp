@@ -6,6 +6,11 @@
 void setClock(clockType &);
 void resetStream();
 
+// lecture activity create two more exception classes in clockexcept.h and cpp
+// one for minutes and one for seconds.
+// add the code to throw the exception in clock.cpp
+// add the catch blocks to handle the exceptions in setClock
+
 int main()
 {
     clockType myClock(14, 32, 23);
