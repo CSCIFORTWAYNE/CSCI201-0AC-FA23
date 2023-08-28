@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <limits>
 #include "clock.h"
 
 void setClock(clockType &);
@@ -159,5 +160,5 @@ void setClock(clockType &c)
 void resetStream()
 {
     std::cin.clear();
-    std::cin.ignore(1000, '\n');
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
