@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <string>
 #include <limits>
 #include "clock.h"
@@ -6,13 +7,23 @@
 void setClock(clockType &);
 void resetStream();
 
-// lecture activity create two more exception classes in clockexcept.h and cpp
-// one for minutes and one for seconds.
-// add the code to throw the exception in clock.cpp
-// add the catch blocks to handle the exceptions in setClock
-
 int main()
 {
+    std::vector<int> myList(10);
+    for (int i = 0; i < 10; i++)
+    {
+        myList[i] = 0;
+    }
+    myList.push_back(89);
+    myList.push_back(100);
+    myList.push_back(281);
+    for (int i = 0; i < myList.size(); i++)
+    {
+        std::cout << myList[i] << std::endl;
+    }
+    myList[2] = 672;
+    myList.at(2) = 543;
+
     clockType myClock(14, 32, 23);
     myClock.setHour(13);
     clockType yourClock;
@@ -30,32 +41,75 @@ int main()
             continue;
         }
     }
-    std::cout << yourClock.print();
+    std::cout << yourClock.print() << std::endl;
 
     return 0;
 }
 
 void setClock(clockType &c)
 {
-    std::string typeOfClock;
-    int tod;
+    int typeOfClock;
+    hourType numHours;
+    std::string tod;
     bool hour = false, min = false, sec = false;
     int h, m, s;
-    std::cout << "What kind of clock is it?" << std::endl;
-    std::cout << "Enter ";
-    for (int i = 0; i < 2; i++)
+    std::cout << "How many hours are on the clock" << std::endl;
+    std::cin >> typeOfClock;
+    while (!std::cin || !intToHourType.count(typeOfClock))
     {
-        std::cout << hourToString[i] << " or ";
+        if (std::cin.eof())
+        {
+            std::cout << "There was a problem and there is no more input! Input validation for hours on clock!" << std::endl;
+            return;
+        }
+        if (!std::cin)
+        {
+            resetStream();
+            std::cout << "You entered something that is not a number." << std::endl;
+        }
+        else
+        {
+            std::cout << "The number of hours is invalid. Clocks can have 12 or 24 hours." << std::endl;
+        }
+        std::cout << "How many hours are on the clock" << std::endl;
+        std::cin >> typeOfClock;
     }
-    std::cout << ": ";
-    std::getline(std::cin >> std::ws, typeOfClock);
-    std::cout << "Choose the time of day:" << std::endl;
-    for (int i = 0; i < 2; i++)
+    numHours = intToHourType.at(typeOfClock);
+    if (numHours == TWELVE)
     {
-        std::cout << i + 1 << ": " << amPmToString[i] << std::endl;
+        std::cout << "Enter the time of day (";
+        std::map<amPmType, std::string>::const_iterator it = amPmToStr.begin();
+        std::cout << it->second;
+        for (++it; it != amPmToStr.end(); ++it)
+        {
+            std::cout << ", " << it->second;
+        }
+        std::cout << "): ";
+        std::cin >> tod;
+        std::transform(tod.begin(), tod.end(), tod.begin(), ::toupper);
+        while (!strToAmPm.count(tod))
+        {
+            if (std::cin.eof())
+            {
+                std::cout << "There was a problem and there is no more input! Input validation for AM/PM!" << std::endl;
+                return;
+            }
+            std::cout << "You have entered an invalid value!" << std::endl;
+            std::cout << "Enter the time of day (";
+            std::map<amPmType, std::string>::const_iterator it = amPmToStr.begin();
+            std::cout << it->second;
+            for (++it; it != amPmToStr.end(); ++it)
+            {
+                std::cout << ", " << it->second;
+            }
+            std::cout << "): ";
+            std::cin >> tod;
+            std::transform(tod.begin(), tod.end(), tod.begin(), ::toupper);
+        }
     }
-    std::cin >> tod;
+
     bool set = false;
+
     while (!set)
     {
         if (!hour)
@@ -149,8 +203,12 @@ void setClock(clockType &c)
         //  c.setSecond(s);
         try
         {
-            clockType newClock(h, m, s, typeOfClock, timesOfDay[tod - 1]);
-            c = newClock;
+            c.setClockType(numHours);
+            c.setAmPm(strToAmPm.at(tod));
+            c.setHour(h);
+            c.setMinute(m);
+            c.setSecond(s);
+
             set = true;
         }
         catch (hourException e)

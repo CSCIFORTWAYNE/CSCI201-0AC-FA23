@@ -6,12 +6,13 @@
 #include <iomanip>
 #include <algorithm>
 #include <stdexcept>
+#include <map>
 #include "clockexcept.h"
 
 enum hourType
 {
-    TWELVE,
-    TWENTYFOUR
+    TWELVE = 12,
+    TWENTYFOUR = 24
 };
 enum amPmType
 {
@@ -19,19 +20,25 @@ enum amPmType
     PM
 };
 
-const std::string hourToString[] = {"12 hour clock", "24 hour clock"};
+const std::map<hourType, std::string> hourTypeToStr = {{TWELVE, "12 hour clock"}, {TWENTYFOUR, "24 hour clock"}};
+const std::map<int, hourType> intToHourType = {{12, TWELVE}, {24, TWENTYFOUR}};
+const std::map<amPmType, std::string> amPmToStr = {{AM, "AM"}, {PM, "PM"}};
+const std::map<std::string, amPmType> strToAmPm = {{"AM", AM}, {"PM", PM}};
+/* const std::string hourToString[] = {"12 hour clock", "24 hour clock"};
 const std::string amPmToString[] = {"AM", "PM"};
 const hourType availableTypes[] = {TWELVE, TWENTYFOUR};
-const amPmType timesOfDay[] = {AM, PM};
+const amPmType timesOfDay[] = {AM, PM}; */
 
 class clockType
 {
 public:
     // clockType();
-    clockType(int h = 0, int m = 0, int s = 0, std::string = hourToString[1], amPmType = timesOfDay[1]); // first parameter is hour, second is minute, third is second.
+    clockType(int h = 0, int m = 0, int s = 0, hourType = TWENTYFOUR, amPmType = PM); // first parameter is hour, second is minute, third is second.
     void setHour(int h);
     void setMinute(int m);
     void setSecond(int s);
+    void setClockType(hourType);
+    void setAmPm(amPmType);
     int getHour() const;
     int getMinute() const; // fill in for lecture activity
     int getSecond() const; // fill in for lecture activity

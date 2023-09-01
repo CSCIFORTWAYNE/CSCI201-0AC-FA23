@@ -5,7 +5,7 @@
 class hourException
 {
 public:
-    hourException();
+    hourException(int);
     std::string what();
 
 private:
