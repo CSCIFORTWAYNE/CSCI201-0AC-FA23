@@ -42,6 +42,9 @@ public:
     int getHour() const;
     int getMinute() const; // fill in for lecture activity
     int getSecond() const; // fill in for lecture activity
+    void incrementSecond();
+    void incrementMinute();
+    void incrementHour();
 
     std::string print() const;
 

@@ -52,9 +52,7 @@ void clockType::setMinute(int m)
     }
     else
     {
-        std::cout << "The minute is invalid. Valid values are between 0 and 59." << std::endl;
-        std::cout << "The minute will be set to 0." << std::endl;
-        minute = 0;
+        throw minuteException();
     }
 }
 
@@ -66,9 +64,7 @@ void clockType::setSecond(int s)
     }
     else
     {
-        std::cout << "The second is invalid. Valid values are between 0 and 59." << std::endl;
-        std::cout << "The second will be set to 0." << std::endl;
-        second = 0;
+        throw secondException();
     }
 }
 
@@ -85,6 +81,26 @@ void clockType::setAmPm(amPmType a)
 int clockType::getHour() const
 {
     return hour;
+}
+
+int clockType::getMinute() const
+{
+    return minute;
+}
+
+int clockType::getSecond() const
+{
+    return second;
+}
+
+void clockType::incrementSecond()
+{
+    second++;
+    if (second > 59)
+    {
+        second = 0;
+        incrementMinute();
+    }
 }
 
 std::string clockType::print() const
@@ -104,6 +120,38 @@ std::string clockType::print() const
         out << hourTypeToStr.at(type) << std::endl;
     }
     return out.str();
+}
+
+void clockType::incrementMinute()
+{
+    minute++;
+    if (minute > 59)
+    {
+        minute = 0;
+        incrementHour();
+    }
+}
+
+void clockType::incrementHour()
+{
+    hour++;
+    if (type == TWELVE)
+    {
+        if (hour == 12)
+        {
+            timeOfDay == PM ? timeOfDay = AM : timeOfDay = PM; // if timeofday is pm set to am otherwise set to pm.
+        }
+        if (hour > 12)
+        {
+            hour = 1;
+            // timeOfDay == PM ? timeOfDay = AM : timeOfDay = PM; // if timeofday is pm set to am otherwise set to pm.
+        }
+    }
+    else
+    {
+        if (hour > 23)
+            hour = 0;
+    }
 }
 
 /*

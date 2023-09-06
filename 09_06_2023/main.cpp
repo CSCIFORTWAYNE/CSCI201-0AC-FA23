@@ -10,7 +10,8 @@ void resetStream();
 int main()
 {
     std::vector<clockType *> clocks;
-    clockType *c;
+    clockType *c = nullptr;
+
     int typeOfClock;
     hourType numHours;
     std::string tod;
@@ -73,7 +74,7 @@ int main()
 
     bool set = false;
 
-    while (!set)
+    while (c == nullptr)
     {
         if (!hour)
         {
@@ -163,18 +164,38 @@ int main()
 
         try
         {
+
+            clockType cc(h, m, s, numHours);
             if (numHours == TWENTYFOUR)
                 c = new clockType(h, m, s, numHours);
             else
                 c = new clockType(h, m, s, numHours, clockType::strToAmPm.at(tod));
-
             set = true;
         }
-        catch (const std::exception &e)
+        catch (hourException e)
         {
-            std::cerr << e.what() << '\n';
+            std::cout << e.what() << '\n';
+            hour = false;
+        }
+        catch (minuteException e)
+        {
+            std::cout << e.what() << '\n';
+            min = false;
+        }
+        catch (secondException e)
+        {
+            std::cout << e.what() << '\n';
+            sec = false;
         }
     }
+
+    std::cout << c->print() << std::endl;
+
+    for (int i = 0; i < 10; i++)
+    {
+        c->incrementSecond();
+    }
+    std::cout << c->print() << std::endl;
 
     /* std::vector<int> myList(10);
     for (int i = 0; i < 10; i++)

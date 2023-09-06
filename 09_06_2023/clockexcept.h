@@ -11,5 +11,22 @@ public:
 private:
     std::string msg;
 };
+class minuteException
+{
+public:
+    minuteException();
+    std::string what();
 
+private:
+    std::string msg;
+};
+class secondException
+{
+public:
+    secondException();
+    std::string what();
+
+private:
+    std::string msg;
+};
 #endif
