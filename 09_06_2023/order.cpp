@@ -34,7 +34,21 @@ order::order(const order &otherOrder)
 
 std::string order::tostring()
 {
-    return std::string();
+    std::ostringstream out;
+    out << std::setprecision(2) << std::showpoint << std::fixed;
+    out << "Your order is summarized below: " << std::endl;
+    out << "Donuts ordered: " << std::endl;
+    for (int i = 0; i < numDonuts; i++)
+    {
+        out << donuts[i].toString() << std::endl;
+    }
+    out << "Drinks orderd:" << std::endl;
+    for (int i = 0; i < numDrinks; i++)
+    {
+        out << drinks[i]->getSize() << " - " << drinks[i]->getTemperature() << ", " << drinks[i]->getBaseStr() << ", " << drinks[i]->getDairy() << ", " << drinks[i]->getFlavor()
+            << " - $" << drinks[i]->getPrice() << std::endl;
+    }
+    return out.str();
 }
 
 order::~order()
