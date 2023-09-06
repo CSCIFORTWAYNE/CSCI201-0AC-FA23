@@ -171,6 +171,7 @@ int main()
             else
                 c = new clockType(h, m, s, numHours, clockType::strToAmPm.at(tod));
             set = true;
+            clocks.push_back(c);
         }
         catch (hourException e)
         {
