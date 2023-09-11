@@ -11,9 +11,11 @@ amPmType getTOD();
 int getHour();
 int getMinute();
 int getSecond();
+void codeGradeLoopFix(std::string errLocation);
 
 int main()
 {
+
     std::vector<clockType *> clocks;
     clockType *c = nullptr;
     for (int i = 0; i < 2; i++)
@@ -26,6 +28,7 @@ int main()
         numHours = getClockType();
         if (numHours == TWELVE)
         {
+
             tod = getTOD();
         }
 
@@ -33,6 +36,7 @@ int main()
 
         while (c == nullptr)
         {
+
             if (!hour)
             {
                 h = getHour();
@@ -89,7 +93,8 @@ int main()
     std::cout << clocks[1]->print() << std::endl;
     int diff = *(clocks[0]) - *(clocks[1]);
     std::cout << "The difference between the two clocks is " << diff << " hours" << std::endl;
-    ;
+    clockType add = *(clocks[0]) + 56;
+    std::cout << add.print() << std::endl;
 
     /* std::vector<int> myList(10);
     for (int i = 0; i < 10; i++)
@@ -141,11 +146,7 @@ hourType getClockType()
     std::cin >> typeOfClock;
     while (!std::cin || !clockType::intToHourType.count(typeOfClock))
     {
-        if (std::cin.eof())
-        {
-            std::cout << "There was a problem and there is no more input! Input validation for hours on clock!" << std::endl;
-            return TWELVE;
-        }
+        codeGradeLoopFix("getClockType");
         if (!std::cin)
         {
             resetStream();
@@ -177,11 +178,7 @@ amPmType getTOD()
     std::transform(tod.begin(), tod.end(), tod.begin(), ::toupper);
     while (!clockType::strToAmPm.count(tod))
     {
-        if (std::cin.eof())
-        {
-            std::cout << "There was a problem and there is no more input! Input validation for AM/PM!" << std::endl;
-            return AM;
-        }
+        codeGradeLoopFix("getTOD");
         std::cout << "You have entered an invalid value!" << std::endl;
         std::cout << "Enter the time of day (";
         std::map<amPmType, std::string>::const_iterator it = clockType::amPmToStr.begin();
@@ -204,11 +201,7 @@ int getHour()
     std::cin >> h;
     while (!std::cin /*|| h < 0 || h > 23*/)
     {
-        if (std::cin.eof())
-        {
-            std::cout << "There was a problem and there is no more input! Input validation for hours" << std::endl;
-            return 0;
-        }
+        codeGradeLoopFix("get hour");
         try
         {
             if (!std::cin)
@@ -240,11 +233,7 @@ int getMinute()
     std::cin >> m;
     while (!std::cin /*|| h < 0 || h > 23*/)
     {
-        if (std::cin.eof())
-        {
-            std::cout << "There was a problem and there is no more input! Input validation for min" << std::endl;
-            return 0;
-        }
+        codeGradeLoopFix("getMinute");
         try
         {
             if (!std::cin)
@@ -302,4 +291,13 @@ int getSecond()
         std::cin >> s;
     }
     return s;
+}
+
+void codeGradeLoopFix(std::string errLocation)
+{
+    if (std::cin.eof())
+    {
+        std::cout << "There was a problem and there is no more input! @" + errLocation << std::endl;
+        throw std::invalid_argument(errLocation); // return or throw an exception here to force the program to end or return from the function.
+    }
 }

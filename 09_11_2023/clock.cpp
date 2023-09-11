@@ -159,16 +159,53 @@ int clockType::operator-(const clockType &otherClock) const
     int diffH;
     int cH = this->hour;       // corrected version for 12 hour clocks
     int ocH = otherClock.hour; // corrected otherclock for 12 hour clocks
-    if (this->type == TWELVE && this->timeOfDay == PM)
+    if (this->type == TWELVE && this->timeOfDay == PM && this->hour < 12)
     {
         cH = this->hour + 12;
     }
-    if (otherClock.type == TWELVE && otherClock.timeOfDay == PM)
+    else if (this->type == TWELVE && this->timeOfDay == AM && this->hour == 12)
+    {
+        cH = 0;
+    }
+    if (otherClock.type == TWELVE && otherClock.timeOfDay == PM && otherClock.hour < 12)
     {
         ocH = otherClock.hour + 12;
     }
+    else if (otherClock.type == TWELVE && otherClock.timeOfDay == AM && otherClock.hour == 12)
+    {
+        ocH = 0;
+    }
 
-    return cH - ocH;
+    return abs(cH - ocH);
+}
+
+clockType clockType::operator+(int hours) const
+{
+    int newHour = this->hour;
+    amPmType tod = this->timeOfDay;
+    for (int i = 0; i < hours; i++)
+    {
+        newHour++;
+        if (type == TWELVE)
+        {
+            if (newHour == 12)
+            {
+                tod == PM ? tod = AM : tod = PM; // if timeofday is pm set to am otherwise set to pm.
+            }
+            if (newHour > 12)
+            {
+                newHour = 1;
+                // timeOfDay == PM ? timeOfDay = AM : timeOfDay = PM; // if timeofday is pm set to am otherwise set to pm.
+            }
+        }
+        else
+        {
+            if (newHour > 23)
+                newHour = 0;
+        }
+    }
+
+    return clockType(newHour, this->minute, this->second, this->type, tod);
 }
 
 /*

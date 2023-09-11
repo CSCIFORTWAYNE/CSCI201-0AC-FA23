@@ -46,6 +46,7 @@ public:
     void incrementMinute();
     void incrementHour();
     int operator-(const clockType &) const;
+    clockType operator+(int) const;
 
     std::string print() const;
 
