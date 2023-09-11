@@ -84,17 +84,24 @@ int main()
         c = NULL;
     }
 
-    std::cout << clocks[0]->print() << std::endl;
+    std::cout << *clocks[0] << std::endl;
 
-    /* for (int i = 0; i < 10; i++)
+    clockType x = clocks[0]->operator++(7);
+    std::cout << x << " " << *clocks[0] << std::endl;
+    clockType y = x++;
+    std::cout << y << " " << x << std::endl;
+    for (int i = 0; i < 10; i++)
     {
-        c->incrementSecond();
-    } */
-    std::cout << clocks[1]->print() << std::endl;
+        x = ++*(clocks[0]);
+        std::cout << x << " " << *clocks[0] << std::endl;
+        y = ++x;
+        std::cout << y << " " << x << std::endl;
+    }
+    std::cout << *clocks[1] << std::endl;
     int diff = *(clocks[0]) - *(clocks[1]);
     std::cout << "The difference between the two clocks is " << diff << " hours" << std::endl;
     clockType add = *(clocks[0]) + 56;
-    std::cout << add.print() << std::endl;
+    std::cout << add << std::endl;
 
     /* std::vector<int> myList(10);
     for (int i = 0; i < 10; i++)

@@ -47,8 +47,17 @@ public:
     void incrementHour();
     int operator-(const clockType &) const;
     clockType operator+(int) const;
-
+    friend int operator-(clockType &left, int right);
+    friend std::ostream &operator<<(std::ostream &, const clockType &);
+    clockType operator++();
+    clockType operator++(int);
     std::string print() const;
+    bool operator>(const clockType &) const;
+    bool operator>=(const clockType &) const;
+    bool operator==(const clockType &) const; // implement for lecture activity
+    bool operator!=(const clockType &) const; // implement for lecture activity
+    bool operator<(const clockType &) const;  // implement for lecture activity
+    bool operator<=(const clockType &) const; // implement for lecture activity
 
 private:
     int hour;

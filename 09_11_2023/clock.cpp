@@ -122,6 +122,65 @@ std::string clockType::print() const
     return out.str();
 }
 
+bool clockType::operator>(const clockType &otherClock) const
+{
+    int cH = this->hour;       // corrected version for 12 hour clocks
+    int ocH = otherClock.hour; // corrected otherclock for 12 hour clocks
+    if (this->type == TWELVE && this->timeOfDay == PM && this->hour < 12)
+    {
+        cH = this->hour + 12;
+    }
+    else if (this->type == TWELVE && this->timeOfDay == AM && this->hour == 12)
+    {
+        cH = 0;
+    }
+    if (otherClock.type == TWELVE && otherClock.timeOfDay == PM && otherClock.hour < 12)
+    {
+        ocH = otherClock.hour + 12;
+    }
+    else if (otherClock.type == TWELVE && otherClock.timeOfDay == AM && otherClock.hour == 12)
+    {
+        ocH = 0;
+    }
+
+    if (cH == ocH)
+    {
+        if (this->minute == otherClock.minute)
+        {
+            if (this->second > otherClock.second)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if (this->minute > otherClock.minute)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else if (cH > ocH)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    return false;
+}
+
+bool clockType::operator>=(const clockType &otherClock) const
+{
+    return *this > otherClock || *this == otherClock;
+}
+
 void clockType::incrementMinute()
 {
     minute++;
@@ -208,6 +267,23 @@ clockType clockType::operator+(int hours) const
     return clockType(newHour, this->minute, this->second, this->type, tod);
 }
 
+std::ostream &operator<<(std::ostream &out, const clockType &c)
+{
+    out << c.print();
+    return out;
+}
+
+clockType clockType::operator++()
+{
+    incrementSecond();
+    return *this;
+}
+clockType clockType::operator++(int)
+{
+    clockType temp = *this;
+    incrementSecond();
+    return temp;
+}
 /*
 clockType::clockType()
 {
