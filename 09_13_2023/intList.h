@@ -11,6 +11,7 @@ public:
     intList &operator+(int);
     ~intList();
     const intList &operator=(const intList &);
+    friend std::istream &operator>>(std::istream &, intList &);
 
 private:
     int *list;

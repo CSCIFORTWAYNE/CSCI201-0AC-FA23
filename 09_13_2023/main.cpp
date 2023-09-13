@@ -4,6 +4,7 @@
 #include <limits>
 #include <algorithm>
 #include <iomanip>
+#include <sstream>
 
 void codeGradeLoopFix(std::string errLocation);
 void resetStream();
@@ -12,44 +13,46 @@ baseType chooseBase();
 sizeType chooseSize();
 tempType chooseTemp();
 void printObject(drink object);
+template <class t>
+std::string toString(t obj);
 int main()
 {
-    /*  drink **mydrinks;
-     int numDrinks;
-     int *x = NULL;
-     x = new int[0];
-     int *y = NULL;
-     y = new int[1];
-     x[0] = 7;
-     y[0] = 14;
-     if (x == y)
-         std::cout << "true" << std::endl;
-     // std::cout << x[0] << std::endl;
-     std::cout << "How many drinks would you like? ";
-     std::cin >> numDrinks;
-     std::cout << std::endl;
-     while (!std::cin || numDrinks <= 0)
-     {
-         codeGradeLoopFix("Num drinks");
-         if (!std::cin)
-             resetStream();
-         std::cout << "You entered an invalid value. You should enter a number greater than 0." << std::endl;
-         std::cout << "How many drinks would you like? ";
-         std::cin >> numDrinks;
-         std::cout << std::endl;
-     }
-     mydrinks = new drink *[numDrinks];
-     for (int i = 0; i < numDrinks; i++)
-     {
-         createDrink(mydrinks[i]);
-     }
-     for (int i = 0; i < numDrinks; i++)
-     {
-         printObject(*mydrinks[i]);
-         std::cout << std::endl;
-     }
-     drink newDrink(*(mydrinks[0]));
-     printObject(newDrink); */
+    drink **mydrinks;
+    int numDrinks;
+    int *x = NULL;
+    x = new int[0];
+    int *y = NULL;
+    y = new int[1];
+    x[0] = 7;
+    y[0] = 14;
+    if (x == y)
+        std::cout << "true" << std::endl;
+    // std::cout << x[0] << std::endl;
+    std::cout << "How many drinks would you like? ";
+    std::cin >> numDrinks;
+    std::cout << std::endl;
+    while (!std::cin || numDrinks <= 0)
+    {
+        codeGradeLoopFix("Num drinks");
+        if (!std::cin)
+            resetStream();
+        std::cout << "You entered an invalid value. You should enter a number greater than 0." << std::endl;
+        std::cout << "How many drinks would you like? ";
+        std::cin >> numDrinks;
+        std::cout << std::endl;
+    }
+    mydrinks = new drink *[numDrinks];
+    for (int i = 0; i < numDrinks; i++)
+    {
+        createDrink(mydrinks[i]);
+    }
+    for (int i = 0; i < numDrinks; i++)
+    {
+        printObject(*mydrinks[i]);
+        std::cout << std::endl;
+    }
+    drink newDrink(*(mydrinks[0]));
+    printObject(newDrink);
 
     intList ints;
     ints = ints + 7;
@@ -69,6 +72,18 @@ int main()
 
     list3 + 18;
     std::cout << list3 << std::endl;
+
+    std::cout << "Enter 9 numbers to add to the list: ";
+    std::cin >> list2;
+    std::cout << std::endl;
+    std::cout << list2 << std::endl;
+    ints + 10;
+    ints + 18;
+    ints + 27;
+    // std::cout << toString(*(mydrinks[0]));
+    std::cout << toString(7.8) << std::endl;
+    std::cout << toString(ints) << std::endl;
+    std::cout << toString("hello world");
 
     return 0;
 }
@@ -169,4 +184,12 @@ void printObject(drink object)
     std::cout << "Flavor: " << object.getFlavor() << std::endl;
     std::cout << "Dairy: " << object.getDairy() << std::endl; // 1*
     std::cout << "Price: $" << std::fixed << std::setprecision(2) << object.getPrice() << std::endl;
+}
+
+template <class t>
+std::string toString(t obj)
+{
+    std::ostringstream out;
+    out << obj;
+    return out.str();
 }

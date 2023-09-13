@@ -73,8 +73,24 @@ std::ostream &operator<<(std::ostream &out, const intList &l)
 {
     for (int i = 0; i < l.numInts; i++)
     {
-        std::cout << l.list[i] << std::endl;
-        // std::cout << l.list[i] << " ";
+        // std::cout << l.list[i] << std::endl;
+        std::cout << l.list[i] << " ";
     }
     return out;
+}
+
+std::istream &operator>>(std::istream &in, intList &l)
+{
+    int intsNeeded = l.maxInts - l.numInts;
+    for (int i = 0; i < intsNeeded; i++)
+    {
+        int x;
+        in >> x;
+        if (!in)
+        {
+            throw x;
+        }
+        l + x;
+    }
+    return in;
 }
