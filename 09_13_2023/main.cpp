@@ -1,4 +1,5 @@
 #include "drink.h"
+#include "intList.h"
 #include <iostream>
 #include <limits>
 #include <algorithm>
@@ -13,39 +14,61 @@ tempType chooseTemp();
 void printObject(drink object);
 int main()
 {
-    drink **mydrinks;
-    int numDrinks;
-    int *x = NULL;
-    x = new int[0];
-    int *y = NULL;
-    y = new int[1];
-    x[0] = 7;
-    y[0] = 14;
-    if (x == y)
-        std::cout << "true" << std::endl;
-    // std::cout << x[0] << std::endl;
-    std::cout << "How many drinks would you like? ";
-    std::cin >> numDrinks;
-    std::cout << std::endl;
-    while (!std::cin || numDrinks <= 0)
+    /*  drink **mydrinks;
+     int numDrinks;
+     int *x = NULL;
+     x = new int[0];
+     int *y = NULL;
+     y = new int[1];
+     x[0] = 7;
+     y[0] = 14;
+     if (x == y)
+         std::cout << "true" << std::endl;
+     // std::cout << x[0] << std::endl;
+     std::cout << "How many drinks would you like? ";
+     std::cin >> numDrinks;
+     std::cout << std::endl;
+     while (!std::cin || numDrinks <= 0)
+     {
+         codeGradeLoopFix("Num drinks");
+         if (!std::cin)
+             resetStream();
+         std::cout << "You entered an invalid value. You should enter a number greater than 0." << std::endl;
+         std::cout << "How many drinks would you like? ";
+         std::cin >> numDrinks;
+         std::cout << std::endl;
+     }
+     mydrinks = new drink *[numDrinks];
+     for (int i = 0; i < numDrinks; i++)
+     {
+         createDrink(mydrinks[i]);
+     }
+     for (int i = 0; i < numDrinks; i++)
+     {
+         printObject(*mydrinks[i]);
+         std::cout << std::endl;
+     }
+     drink newDrink(*(mydrinks[0]));
+     printObject(newDrink); */
+
+    intList ints;
+    ints = ints + 7;
+    intList list2(ints);
+    intList list3(20);
+    for (int i = 0; i < 20; i++)
     {
-        codeGradeLoopFix("Num drinks");
-        if (!std::cin)
-            resetStream();
-        std::cout << "You entered an invalid value. You should enter a number greater than 0." << std::endl;
-        std::cout << "How many drinks would you like? ";
-        std::cin >> numDrinks;
-        std::cout << std::endl;
+        list3 + i;
     }
-    mydrinks = new drink *[numDrinks];
-    for (int i = 0; i < numDrinks; i++)
-    {
-        createDrink(mydrinks[i]);
-    }
-    for (int i = 0; i < numDrinks; i++)
-    {
-        printObject(*mydrinks[i]);
-    }
+    intList *list4;
+    list4 = new intList(list3);
+
+    std::cout << ints << std::endl;
+    std::cout << list2 << std::endl;
+    std::cout << list3 << std::endl;
+    std::cout << *list4 << std::endl;
+
+    list3 + 18;
+    std::cout << list3 << std::endl;
 
     return 0;
 }

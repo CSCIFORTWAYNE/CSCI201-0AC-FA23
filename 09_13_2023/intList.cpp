@@ -2,6 +2,8 @@
 
 intList::intList(const intList &othList)
 {
+    // this->numInts = 0;
+    this->list = nullptr;
     copyList(othList);
 }
 
@@ -10,8 +12,8 @@ intList::intList(int maxInts)
     if (maxInts > 0)
     {
         this->maxInts = maxInts;
-        this->list = new int[this->maxInts];
         this->numInts = 0;
+        this->list = new int[this->maxInts];
     }
     else
         throw maxInts;
@@ -30,7 +32,9 @@ intList &intList::operator+(int numToAdd)
         delete[] list;  // delete the old list
         list = newList; // set the class list to be the new list
     }
-    list[++numInts] = numToAdd;
+    list[numInts++] = numToAdd;
+    // numInts++;
+    return *this;
 }
 
 intList::~intList()
@@ -45,11 +49,12 @@ const intList &intList::operator=(const intList &othList)
     {
         copyList(othList);
     }
+    return *this;
 }
 
 void intList::copyList(const intList &othList)
 {
-    if (this->numInts > 0)
+    if (this->list == nullptr)
     {
         delete[] list;
         list = nullptr;
