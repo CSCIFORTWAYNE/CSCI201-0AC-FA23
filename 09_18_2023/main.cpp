@@ -23,5 +23,14 @@ int main()
         std::cout << donutInventory[i] << std::endl;
     }
 
+    std::vector<iceCream> ic;
+    ic.push_back(iceCream());
+    ic.push_back(iceCream());
+    ic.push_back(iceCream());
+    for (int i = 0; i < ic.size(); i++)
+    {
+        std::cout << ic[i] << std::endl;
+    }
+
     return 0;
 }

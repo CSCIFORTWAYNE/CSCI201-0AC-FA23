@@ -56,6 +56,12 @@ std::ostream &operator<<(std::ostream &out, const donut &d)
     return out;
 }
 
+std::ostream &operator<<(std::ostream &out, iceCream &i)
+{
+    out << i.tostring();
+    return out;
+}
+
 std::string product::tostring() const
 {
     std::ostringstream out;
@@ -87,8 +93,8 @@ std::string donut::tostring() const
 int iceCream::prodNum = 1;
 iceCream::iceCream(flavorType flavor, int scoopAmount) : product(scoopPricing(scoopAmount), "Ice Cream", "I" + std::to_string(prodNum++))
 {
-    setFlavor(flavor);
-    setScoopAmount(scoopAmount);
+    // setFlavor(flavor);
+    // setScoopAmount(scoopAmount);
     purchase();
 }
 
