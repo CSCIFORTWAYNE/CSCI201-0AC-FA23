@@ -79,6 +79,11 @@ std::ostream &operator<<(std::ostream &out, const intList &l)
     return out;
 }
 
+intList &operator+(int x, intList y)
+{
+    return y + x;
+}
+
 std::istream &operator>>(std::istream &in, intList &l)
 {
     int intsNeeded = l.maxInts - l.numInts;

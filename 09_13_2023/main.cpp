@@ -84,6 +84,7 @@ int main()
     std::cout << toString(7.8) << std::endl;
     std::cout << toString(ints) << std::endl;
     std::cout << toString("hello world");
+    10 + ints;
 
     return 0;
 }

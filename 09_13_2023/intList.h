@@ -9,6 +9,8 @@ public:
     intList(int = 10);
     friend std::ostream &operator<<(std::ostream &, const intList &);
     intList &operator+(int);
+    intList &operator+(intList);
+    friend intList &operator+(int, intList);
     ~intList();
     const intList &operator=(const intList &);
     friend std::istream &operator>>(std::istream &, intList &);
