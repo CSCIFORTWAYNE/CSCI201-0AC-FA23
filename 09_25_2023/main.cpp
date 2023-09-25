@@ -7,6 +7,7 @@ void displayCat(cat *);
 int main()
 {
     std::vector<animal *> zoo(3);
+    // std::vector<animal> zoo2;
     zoo[0] = new houseCat();
     zoo[1] = new cat();
     zoo[2] = new dog();
@@ -16,6 +17,8 @@ int main()
     delete a;
     dog d;
     a = &d;
+    /*  zoo2.push_back(d);
+     zoo2[0].id(); */
 
     a->id();
     std::cout << std::endl;
