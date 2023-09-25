@@ -7,6 +7,8 @@ void animal::id()
 
 void cat::id()
 {
+    animal::id();
+    std::cout << std::endl;
     std::cout << "cat";
 }
 
