@@ -6,6 +6,7 @@ int main(int argc, char *argv[])
 {
     if (argc != 2)
     {
+        // 127.0.0.1 works on WSL ::1 works on windows.
         std::cerr << "Usage: ./client <server host address>" << std::endl;
         return 1;
     }

@@ -1,5 +1,6 @@
 all: PracticalSocket.o server client
 server: PracticalSocket.o server.cpp
+# on msys on windows added -lws2_32 to ensure linking to the winsock library
 	g++ -pedantic-errors -g server.cpp PracticalSocket.o -lws2_32 -o server
 client: PracticalSocket.o client.cpp
 	g++ -pedantic-errors -g client.cpp PracticalSocket.o -lws2_32 -o client

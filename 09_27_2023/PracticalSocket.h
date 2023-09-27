@@ -31,15 +31,16 @@ typedef char raw_type; // Type used for raw data on this platform
 typedef unsigned int uint32_t;
 typedef unsigned short in_port_t;
 #else
-#include <sys/types.h>  // For data types
+
 #include <sys/socket.h> // For socket(), connect(), send(), and recv()
 #include <netdb.h>      // For gethostbyname(), in_port_t
 #include <arpa/inet.h>  // For inet_addr()
-#include <unistd.h>     // For close()
+
 #include <netinet/in.h> // For sockaddr_in
 typedef void raw_type; // Type used for raw data on this platform
 #endif
-
+#include <unistd.h>    // For close() moved out of else for msys to compile
+#include <sys/types.h> // For data types
 #include <iostream>
 #include <string>
 #include <stdexcept>
