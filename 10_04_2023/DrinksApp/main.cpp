@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <fstream>
 #include "drink.h"
 
 using namespace Upp;
@@ -26,10 +27,12 @@ struct MyAppWindow : public TopWindow
 	drink *d;
 	ColumnList drinkList;
 	Label listLbl;
+	Button writeBtn;
 	
 	
 	MyAppWindow()
 	{
+		d = new drink(COFFEE, HOT, SMALL, "");
 		Open();
 		Rect active = GetVisibleScreenView();	
 		const int LBLSIZE  = 120;
@@ -51,7 +54,7 @@ struct MyAppWindow : public TopWindow
 		base.Add(TEA, "Tea");
 		base.Add(CREAM, "Cream");
 		base.SetVertical();
-		
+		base = -1;
 		sizeLbl.SetLabel("Drink Size:");
 		Add(sizeLbl.HSizePosZ(MARGIN).TopPosZ(RADIOHEIGHT*numItems + MARGIN*(numItems + 1)));
 		
@@ -59,6 +62,7 @@ struct MyAppWindow : public TopWindow
 		size.Add(MED, "Medium");
 		size.Add(LARGE, "Large");
 		size.SetVertical();
+		size = -1;
 		Add(size.HSizePosZ(LBLSIZE).VSizePosZ(RADIOHEIGHT*numItems + MARGIN*(numItems + 1)));
 		
 		numItems++;
@@ -70,6 +74,7 @@ struct MyAppWindow : public TopWindow
 		temp.Add(ICE,"Iced");
 		temp.Add(BLEND,"Blended");
 		temp.SetVertical();
+		temp = -1;
 		Add(temp.HSizePosZ(LBLSIZE).VSizePosZ(RADIOHEIGHT * numItems + MARGIN*(numItems + 1)));
 		
 		numItems++;
@@ -117,40 +122,141 @@ struct MyAppWindow : public TopWindow
 		createDrink.SetLabel("Create Drink");
 		Add(createDrink.LeftPosZ(MARGIN,LBLSIZE + CTRLWIDTH).TopPosZ(vertPos + (checkDist * checkCount + 1) + MARGIN*2));
 		
-		createDrink << [=] 
-		{
-			baseType b = static_cast<baseType>(static_cast<int>(base.GetData()));	
-			tempType t = static_cast<tempType>(static_cast<int>(temp.GetData()));
-			sizeType s = static_cast<sizeType>(static_cast<int>(size.GetData()));
-			std::string dairyStr = dairy.GetData().ToStd();
-			drink d(b,t,s,dairyStr);
-			for(int i = 0; i < 10; i++)
-			{
-				if(flavor[i].Get())
-					d.addFlavor(flavs[i]);
-			}
-			std::ostringstream priceStr;
-			priceStr << std::setprecision(2) << std::fixed << std::showpoint;
-			priceStr << "$" << d.getPrice();
-			price.SetData(priceStr.str());
-			drinks.push_back(d);
-			std::ostringstream drinkStr;
-			drinkStr << d;
-			drinkList.Add(drinkStr.str(),false);
-		};
+		
 		
 		listLbl.SetLabel("Drinks Created: ");
 		Add(listLbl.LeftPosZ(MARGIN*2+LBLSIZE+CTRLWIDTH).TopPosZ(MARGIN));
 		drinkList.Disable();
 		int btm = createDrink.GetRect().top - listLbl.GetRect().bottom;
 		Add(drinkList.LeftPosZ(MARGIN*2+LBLSIZE+CTRLWIDTH,400).TopPosZ(listLbl.GetRect().bottom,300));
+		writeBtn.SetLabel("Complete Order");
 		
 		
 		Rect finalPos = drinkList.GetRect();
 		int x = 7;
-		SetRect(100,100,finalPos.right + MARGIN*4,finalPos.bottom + MARGIN*4);
+		SetRect(100,100,finalPos.right + MARGIN*4,finalPos.bottom + MARGIN*4 + 50);
 		Size sz(finalPos.right + MARGIN*4,finalPos.bottom + MARGIN*4);
 		SetMinSize(sz);
+		
+		base << [=]
+		{
+			baseType b = static_cast<baseType>((int)base);
+			d->setBase(b);
+			if((int)temp != -1 && (int)size != -1 && !dairy.GetData().ToStd().empty())
+			{
+				std::ostringstream priceStr;
+				priceStr << std::setprecision(2) << std::fixed << std::showpoint;
+				priceStr << "$" << d->getPrice();
+				price.SetData(priceStr.str());
+			}
+		};
+		size << [=]
+		{
+			sizeType s = static_cast<sizeType>((int)size);
+			d->setSize(s);
+			if((int)temp != -1 && (int)base != -1 && !dairy.GetData().ToStd().empty())
+			{
+				std::ostringstream priceStr;
+				priceStr << std::setprecision(2) << std::fixed << std::showpoint;
+				priceStr << "$" << d->getPrice();
+				price.SetData(priceStr.str());
+			}
+		};
+		temp << [=]
+		{
+			tempType b = static_cast<tempType>((int)temp);
+			d->setTemperature(b);
+			if((int)base != -1 && (int)size != -1 && !dairy.GetData().ToStd().empty())
+			{
+				std::ostringstream priceStr;
+				priceStr << std::setprecision(2) << std::fixed << std::showpoint;
+				priceStr << "$" << d->getPrice();
+				price.SetData(priceStr.str());
+			}
+		};
+		dairy << [=] 
+		{
+			d->setDairy(dairy.GetData().ToStd());
+			if((int)base != -1 && (int)size != -1 && (int)temp != -1)
+			{
+				std::ostringstream priceStr;
+				priceStr << std::setprecision(2) << std::fixed << std::showpoint;
+				priceStr << "$" << d->getPrice();
+				price.SetData(priceStr.str());
+			}
+				
+		};
+		
+		for(int i = 0; i < 10; i++)
+		{
+			flavor[i] << [=] 
+			{
+				if(flavor[i].Get())
+				{
+					d->addFlavor(flavs[i]);
+				}
+				else
+				{
+					d->removeFlavor(flavs[i]);
+				}
+				
+				if((int)base != -1 && (int)size != -1 && !dairy.GetData().ToStd().empty() && (int)temp != -1)
+				{	
+					std::ostringstream priceStr;
+					priceStr << std::setprecision(2) << std::fixed << std::showpoint;
+					priceStr << "$" << d->getPrice();
+					price.SetData(priceStr.str());
+				}
+			};
+				
+		}
+		createDrink << [=] 
+		{
+			if((int)base == -1 || (int)temp == -1 || (int)size == -1)
+			{
+				ErrorOK("Please choose the base, size, and temperature");
+				return;
+			}
+			std::string dairyStr = dairy.GetData().ToStd();
+			if(dairyStr.empty())
+			{
+				ErrorOK("Please make a dairy choice");
+				return;	
+			}
+			
+		
+			drinks.push_back(*d);
+			std::ostringstream drinkStr;
+			drinkStr << *d;
+			drinkList.Add(drinkStr.str(),false);
+			base = -1;
+			temp = -1;
+			size = -1;
+			dairy <<= "";
+			for(int i = 0; i < 10; i++)
+			{
+				flavor[i] = 0;
+			}
+			price.SetData("");
+			Rect r = drinkList.GetRect();
+			Add(writeBtn.LeftPosZ(MARGIN*2+LBLSIZE+CTRLWIDTH,400).TopPosZ(drinkList.GetRect().top + 210));
+			
+		};
+		
+		writeBtn << [=] 
+		{
+			std::ofstream out("order.txt");
+			out << std::setprecision(2) << std::fixed << std::showpoint;
+			double total = 0;
+			for(int i = 0; i < drinks.size(); i++)
+			{
+				out << drinks[i] << std::endl;
+				total += drinks[i].getPrice();
+			}
+			out << "Total: $"<< total;
+			out.close();
+			Close();
+		};
 	};
 		
 };
