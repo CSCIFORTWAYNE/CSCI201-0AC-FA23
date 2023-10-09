@@ -1,0 +1,5 @@
+LAYOUT(Drink, 384, 328)
+	ITEM(Upp::Label, Drink, SetLabel(t_("Drink Base:")).LeftPosZ(16, 60).TopPosZ(16, 19))
+	ITEM(Upp::DropList, dv___1, LeftPosZ(96, 128).TopPosZ(16, 19))
+END_LAYOUT
+

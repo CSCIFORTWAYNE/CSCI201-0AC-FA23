@@ -4,6 +4,7 @@ uses
 file
 	drink.cpp,
 	drink.h,
+	drinks.lay,
 	main.cpp;
 
 mainconfig

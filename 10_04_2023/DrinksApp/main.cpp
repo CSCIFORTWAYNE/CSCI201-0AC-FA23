@@ -1,4 +1,8 @@
 #include <CtrlLib/CtrlLib.h>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <iomanip>
 #include "drink.h"
 
 using namespace Upp;
@@ -18,7 +22,10 @@ struct MyAppWindow : public TopWindow
 	EditString price;
 	Label priceLbl;
 	Button createDrink;
-	
+	std::vector<drink> drinks;
+	drink *d;
+	ColumnList drinkList;
+	Label listLbl;
 	
 	
 	MyAppWindow()
@@ -110,10 +117,39 @@ struct MyAppWindow : public TopWindow
 		createDrink.SetLabel("Create Drink");
 		Add(createDrink.LeftPosZ(MARGIN,LBLSIZE + CTRLWIDTH).TopPosZ(vertPos + (checkDist * checkCount + 1) + MARGIN*2));
 		
-		Rect finalPos = createDrink.GetRect();
+		createDrink << [=] 
+		{
+			baseType b = static_cast<baseType>(static_cast<int>(base.GetData()));	
+			tempType t = static_cast<tempType>(static_cast<int>(temp.GetData()));
+			sizeType s = static_cast<sizeType>(static_cast<int>(size.GetData()));
+			std::string dairyStr = dairy.GetData().ToStd();
+			drink d(b,t,s,dairyStr);
+			for(int i = 0; i < 10; i++)
+			{
+				if(flavor[i].Get())
+					d.addFlavor(flavs[i]);
+			}
+			std::ostringstream priceStr;
+			priceStr << std::setprecision(2) << std::fixed << std::showpoint;
+			priceStr << "$" << d.getPrice();
+			price.SetData(priceStr.str());
+			drinks.push_back(d);
+			std::ostringstream drinkStr;
+			drinkStr << d;
+			drinkList.Add(drinkStr.str(),false);
+		};
+		
+		listLbl.SetLabel("Drinks Created: ");
+		Add(listLbl.LeftPosZ(MARGIN*2+LBLSIZE+CTRLWIDTH).TopPosZ(MARGIN));
+		drinkList.Disable();
+		int btm = createDrink.GetRect().top - listLbl.GetRect().bottom;
+		Add(drinkList.LeftPosZ(MARGIN*2+LBLSIZE+CTRLWIDTH,400).TopPosZ(listLbl.GetRect().bottom,300));
+		
+		
+		Rect finalPos = drinkList.GetRect();
 		int x = 7;
-		SetRect(100,100,850,900);
-		Size sz(850,900);
+		SetRect(100,100,finalPos.right + MARGIN*4,finalPos.bottom + MARGIN*4);
+		Size sz(finalPos.right + MARGIN*4,finalPos.bottom + MARGIN*4);
 		SetMinSize(sz);
 	};
 		
